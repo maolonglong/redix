@@ -9,22 +9,17 @@ jobs:
       - image: cimg/go:1.17
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - go-mod-v4-{{ checksum "go.sum" }}
       - run:
           name: Run unit tests
           command: make test
-      - save_cache:
-          key: go-mod-v4-{{ checksum "go.sum" }}
-          paths:
-            - "/go/pkg/mod"
   lint:
     docker:
       - image: golangci/golangci-lint:v1.44.2-alpine
     steps:
       - checkout
-      - run: golangci-lint run
+      - run:
+          name: Run lint
+          command: golangci-lint run
 
 workflows:
   main:
