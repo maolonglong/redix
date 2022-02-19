@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 
@@ -54,19 +55,40 @@ func (s *Server) Run() error {
 		Data:     s.dataHandler,
 	}
 
-	addr := fmt.Sprintf("tcp://%s:%d", viper.GetString("host"), viper.GetInt("port"))
+	shutdownCh := make(chan struct{}, 1)
 
-	// TODO: graceful shutdown evio server
-	//nolint:errcheck
-	go evio.Serve(events, addr)
+	// TODO: graceful shutdown evio server with Ctrl-C
+	go func() {
+		defer func() {
+			shutdownCh <- struct{}{}
+		}()
+		addr := fmt.Sprintf("tcp://%s:%d", viper.GetString("host"), viper.GetInt("port"))
+		if err := evio.Serve(events, addr); err != nil {
+			s.logger.Fatal(err.Error())
+		}
+	}()
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	defer signal.Stop(quit)
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+	defer signal.Stop(sigCh)
 
-	s.logger.Info("redix server listening", zap.String("addr", addr))
-	sig := <-quit
-	s.logger.Info("graceful shutdown", zap.Stringer("signal", sig))
+	path, err := filepath.Abs(viper.GetString("data_dir"))
+	if err != nil {
+		s.logger.Fatal(err.Error())
+	}
+
+	s.logger.Info("redix server started",
+		zap.String("host", viper.GetString("host")),
+		zap.Int("port", viper.GetInt("port")),
+		zap.String("data_dir", path),
+	)
+
+	select {
+	case <-shutdownCh:
+		s.logger.Info("graceful shutdown", zap.String("reason", "'SHUTDOWN' command"))
+	case sig := <-sigCh:
+		s.logger.Info("graceful shutdown", zap.Stringer("signal", sig))
+	}
 
 	return s.store.Close()
 }
@@ -81,6 +103,17 @@ func (s *Server) openedHandler(ec evio.Conn) (out []byte, opts evio.Options, act
 }
 
 func (s *Server) dataHandler(ec evio.Conn, in []byte) (out []byte, action evio.Action) {
+	defer func() {
+		if err := recover(); err != nil {
+			s.logger.Error("panic",
+				zap.ByteString("in", in),
+				zap.Binary("raw", in),
+				zap.Any("err", err),
+			)
+			out = redcon.AppendError(out, "ERR panic.")
+		}
+	}()
+
 	c := ec.Context().(*Context)
 	data := c.is.Begin(in)
 	var complete bool
@@ -114,11 +147,11 @@ func (s *Server) dataHandler(ec evio.Conn, in []byte) (out []byte, action evio.A
 						zap.ByteString("cmd", args[0]),
 						zap.ByteStrings("args", args[1:]),
 					)
-					out = redcon.AppendError(out, "ERR unknown command '"+string(args[0])+"'")
+					out = redcon.AppendError(out, "ERR unknown command '"+string(args[0])+"'.")
 				}
 			case "AUTH":
 				if len(args) != 2 {
-					out = redcon.AppendError(out, "ERR wrong number of arguments for '"+string(args[0])+"' command")
+					out = redcon.AppendError(out, "ERR wrong number of arguments for '"+string(args[0])+"' command.")
 				} else if bytesconv.BytesToString(args[1]) != s.password {
 					out = redcon.AppendError(out, "ERROR WRONGPASS invalid username-password pair or user is disabled.")
 				} else {
@@ -127,21 +160,18 @@ func (s *Server) dataHandler(ec evio.Conn, in []byte) (out []byte, action evio.A
 				}
 			case "PING":
 				if len(args) > 2 {
-					out = redcon.AppendError(out, "ERR wrong number of arguments for '"+string(args[0])+"' command")
+					out = redcon.AppendError(out, "ERR wrong number of arguments for '"+string(args[0])+"' command.")
 				} else if len(args) == 2 {
 					out = redcon.AppendBulk(out, args[1])
 				} else {
 					out = redcon.AppendString(out, "PONG")
 				}
-			case "ECHO":
-				if len(args) != 2 {
-					out = redcon.AppendError(out, "ERR wrong number of arguments for '"+string(args[0])+"' command")
-				} else {
-					out = redcon.AppendBulk(out, args[1])
-				}
 			case "QUIT":
-				out = redcon.AppendString(out, "OK")
+				out = redcon.AppendOK(out)
 				action = evio.Close
+			case "SHUTDOWN":
+				out = redcon.AppendOK(out)
+				action = evio.Shutdown
 			}
 		}
 	}
