@@ -49,7 +49,7 @@ func (s *badgerStorage) Keys(pattern string) ([][]byte, error) {
 		it := txn.NewIterator(opts)
 		defer it.Close()
 		for it.Rewind(); it.Valid(); it.Next() {
-			k := it.Item().Key()
+			k := it.Item().KeyCopy(nil)
 			if match.Match(bytesconv.BytesToString(k), pattern) {
 				keys = append(keys, k)
 			}
