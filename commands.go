@@ -5,7 +5,6 @@
 package redix
 
 import (
-	"context"
 	"strconv"
 	"strings"
 	"time"
@@ -198,7 +197,7 @@ func (s *Server) cmdFLUSHALL(c *Context) {
 		return
 	}
 
-	err := s.store.FlushAll(context.Background())
+	err := s.store.DropAll()
 	if err != nil {
 		s.logUnknownError("store.FlushAll", err)
 		c.ErrUnknown(err)

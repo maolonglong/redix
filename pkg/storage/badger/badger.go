@@ -5,11 +5,11 @@
 package badger
 
 import (
-	"context"
 	"time"
 
 	"github.com/dgraph-io/badger/v3"
 	"github.com/dgraph-io/ristretto/z"
+	"github.com/dustin/go-humanize"
 	"github.com/tidwall/match"
 	"go.chensl.me/redix/internal/bytesconv"
 	"go.chensl.me/redix/pkg/storage"
@@ -86,7 +86,7 @@ func (s *badgerStorage) Del(keys ...[]byte) (int, error) {
 	return cnt, err
 }
 
-func (s *badgerStorage) FlushAll(_ context.Context) error {
+func (s *badgerStorage) DropAll() error {
 	return s.db.DropAll()
 }
 
@@ -152,8 +152,8 @@ func (s *badgerStorage) runValueLogGC() {
 		}
 		lsm, vlog := s.db.Size()
 		s.logger.Info("running value log GC",
-			zap.Int64("lsm", lsm),
-			zap.Int64("vlog", vlog),
+			zap.String("lsm", humanize.Bytes(uint64(lsm))),
+			zap.String("vlog", humanize.Bytes(uint64(vlog))),
 		)
 	again:
 		err := s.db.RunValueLogGC(0.7)

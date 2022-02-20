@@ -5,7 +5,6 @@
 package storage
 
 import (
-	"context"
 	"time"
 )
 
@@ -16,7 +15,7 @@ type Interface interface {
 	Del(keys ...[]byte) (int, error)
 	Expire(key []byte, dur time.Duration) error
 	TTL(key []byte) (int64, error)
-	FlushAll(ctx context.Context) error
+	DropAll() error
 	Close() error
 }
 
