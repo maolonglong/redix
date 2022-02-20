@@ -20,19 +20,50 @@ jobs:
       - run:
           name: Run lint
           command: golangci-lint run
+  release:
+    docker:
+      - image: cimg/go:1.17
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash
 
 workflows:
-  main:
+  untagged-build:
     jobs:
       - test
       - lint
+  tagged-build:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - lint:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
       - docker/publish:
           requires:
             - test
             - lint
-          extra_build_args: "--build-arg BRANCH=${CIRCLE_BRANCH} --build-arg COMMIT=${CIRCLE_SHA1:0:7}"
+          extra_build_args: "--build-arg COMMIT=${CIRCLE_SHA1:0:7}"
           image: maolonglong/redix
-          tag: latest
+          tag: "latest,${CIRCLE_TAG:1}"
           filters:
             branches:
-              only: main
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - release:
+          requires:
+            - test
+            - lint
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/

@@ -16,13 +16,10 @@ import (
 //go:embed banner.txt
 var banner string
 
-var (
-	branch string
-	commit string
-)
+var commit string
 
 func main() {
-	fmt.Printf("%s  branch=%s commit=%s\n\n", banner, branch, commit)
+	fmt.Printf("%s  commit=%s\n\n", banner, commit)
 	config.MustInit()
 	srv, err := redix.Default()
 	if err != nil {

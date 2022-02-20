@@ -1,0 +1,24 @@
+project_name: redix
+builds:
+  - main: ./cmd/redix-server
+    id: redix
+    binary: redix-server
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+    ldflags:
+      - -s -w
+      - -X main.commit={{.ShortCommit}}
+archives:
+  - format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - src: configs/config.yml
+        dst: .
+        strip_parent: true

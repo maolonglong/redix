@@ -1,4 +1,4 @@
-.PHONY: default build
+.PHONY: default build build_image test clean
 
 default: build
 
@@ -14,3 +14,4 @@ test:
 clean:
 	rm -rf ./bin/
 	rm -rf ./data/
+	rm -rf ./dist/
