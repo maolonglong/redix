@@ -19,21 +19,31 @@
 - DEL
 - FLUSHALL
 - FLUSHDB: 没有区分 db，所以直接调用的 FLUSHALL
+- AUTH
+- PING
+- QUIT
+- SHUTDOWN
 
-## 从源码安装
+## 安装
+
+### 二进制
+
+[releases](https://github.com/MaoLongLong/redix/releases)
+
+### Go Install
 
 ```bash
 $ go install go.chensl.me/redix/cmd/redix-server@latest
-go: downloading go.chensl.me/redix v0.0.0-20220219084604-d5ac6cfcea68
+go: downloading go.chensl.me/redix v0.1.0
 $ redix-server # 数据默认存放在当前目录的 data 文件夹下
  _____          _ _
 |  __ \        | (_)
 | |__) |___  __| |___  __
 |  _  // _ \/ _` | \ \/ /
 | | \ \  __/ (_| | |>  <
-|_|  \_\___|\__,_|_/_/\_\  branch= commit=
+|_|  \_\___|\__,_|_/_/\_\  commit=2f449de
 
-{"level":"info","ts":1645260845.3469691,"caller":"redix@v0.0.0-20220219084604-d5ac6cfcea68/redix.go:67","msg":"redix server listening","addr":"tcp://0.0.0.0:6380"}
+{"level":"info","ts":1645346199.62673,"caller":"redix/redix.go:80","msg":"redix server started","host":"0.0.0.0","port":6380,"data_dir":"/Users/.../go/src/go.chensl.me/redix/data"}
 ```
 
 使用 `redis-cli` 或 `iredis` 连接：
@@ -42,7 +52,7 @@ $ redix-server # 数据默认存放在当前目录的 data 文件夹下
 $ redis-cli -p 6380
 ```
 
-## Docker
+### Docker
 
 ```bash
 $ mkdir data
