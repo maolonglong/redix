@@ -116,6 +116,7 @@ func (s *Server) dataHandler(ec evio.Conn, in []byte) (out []byte, action evio.A
 
 	c := ec.Context().(*Context)
 	data := c.is.Begin(in)
+	defer c.is.End(data)
 	var complete bool
 	var err error
 	var args [][]byte
@@ -175,6 +176,5 @@ func (s *Server) dataHandler(ec evio.Conn, in []byte) (out []byte, action evio.A
 			}
 		}
 	}
-	c.is.End(data)
 	return //nolint:nakedret
 }
