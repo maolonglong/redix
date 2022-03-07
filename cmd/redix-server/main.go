@@ -21,10 +21,11 @@ var commit string
 func main() {
 	fmt.Printf("%s  commit=%s\n\n", banner, commit)
 	config.MustInit()
-	srv, err := redix.Default()
+	srv, err := redix.New()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer srv.Cleanup() //nolint:errcheck
 	if err := srv.Run(); err != nil {
 		log.Fatal(err)
 	}

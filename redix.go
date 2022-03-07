@@ -6,15 +6,12 @@ package redix
 
 import (
 	"fmt"
-	"os"
-	"os/signal"
 	"path/filepath"
 	"strings"
-	"syscall"
 
 	"github.com/spf13/viper"
-	"github.com/tidwall/evio"
 	"github.com/tidwall/redcon"
+	"go.chensl.me/evio"
 	"go.chensl.me/redix/internal/bytesconv"
 	"go.chensl.me/redix/pkg/storage"
 	"go.chensl.me/redix/pkg/storage/badger"
@@ -30,7 +27,7 @@ type Server struct {
 	logger   *zap.Logger
 }
 
-func Default() (*Server, error) {
+func New() (*Server, error) {
 	srv := &Server{
 		commands: make(map[string]CommandFunc),
 		password: viper.GetString("password"),
@@ -55,26 +52,10 @@ func (s *Server) Run() error {
 		Data:     s.dataHandler,
 	}
 
-	shutdownCh := make(chan struct{}, 1)
-
-	// TODO: graceful shutdown evio server with Ctrl-C
-	go func() {
-		defer func() {
-			shutdownCh <- struct{}{}
-		}()
-		addr := fmt.Sprintf("tcp://%s:%d", viper.GetString("host"), viper.GetInt("port"))
-		if err := evio.Serve(events, addr); err != nil {
-			s.logger.Fatal(err.Error())
-		}
-	}()
-
-	sigCh := make(chan os.Signal, 1)
-	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
-	defer signal.Stop(sigCh)
-
 	path, err := filepath.Abs(viper.GetString("data_dir"))
 	if err != nil {
-		s.logger.Fatal(err.Error())
+		s.logger.Error("failed to get absolute path", zap.Error(err))
+		return err
 	}
 
 	s.logger.Info("redix server started",
@@ -83,13 +64,11 @@ func (s *Server) Run() error {
 		zap.String("data_dir", path),
 	)
 
-	select {
-	case <-shutdownCh:
-		s.logger.Info("graceful shutdown", zap.String("reason", "'SHUTDOWN' command"))
-	case sig := <-sigCh:
-		s.logger.Info("graceful shutdown", zap.Stringer("signal", sig))
-	}
+	addr := fmt.Sprintf("tcp://%s:%d", viper.GetString("host"), viper.GetInt("port"))
+	return evio.Serve(events, addr)
+}
 
+func (s *Server) Cleanup() error {
 	return s.store.Close()
 }
 
@@ -111,12 +90,12 @@ func (s *Server) dataHandler(ec evio.Conn, in []byte) (out []byte, action evio.A
 				zap.Any("err", err),
 			)
 			out = redcon.AppendError(out, "ERR panic.")
+			action = evio.Close
 		}
 	}()
 
 	c := ec.Context().(*Context)
 	data := c.is.Begin(in)
-	defer c.is.End(data)
 	var complete bool
 	var err error
 	var args [][]byte
@@ -176,5 +155,6 @@ func (s *Server) dataHandler(ec evio.Conn, in []byte) (out []byte, action evio.A
 			}
 		}
 	}
+	c.is.End(data)
 	return //nolint:nakedret
 }
