@@ -7,7 +7,7 @@ require (
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dustin/go-humanize v1.0.0
 	github.com/spf13/viper v1.10.1
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.1
 	github.com/tidwall/match v1.1.1
 	github.com/tidwall/redcon v1.4.4
 	go.chensl.me/evio v1.0.9-0.20220308101908-a5395c05710f
