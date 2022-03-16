@@ -1,4 +1,4 @@
-FROM golang:1.17-alpine AS builder
+FROM golang:1.18-alpine AS builder
 
 ARG COMMIT=""
 
@@ -6,12 +6,13 @@ ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOPROXY=https://proxy.golang.org
 
-WORKDIR /go/src/go.chensl.me/redix
+WORKDIR /code
 COPY . .
 
 RUN go build -o /usr/bin/redix-server \
+    -buildvcs=false \
     -ldflags "-w -s -X main.commit=${COMMIT}" \
-    ./cmd/redix-server
+    ./redix/cmd/redix-server
 
 RUN apk add --no-cache upx && upx -9 /usr/bin/redix-server
 

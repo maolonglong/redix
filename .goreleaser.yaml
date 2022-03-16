@@ -1,7 +1,7 @@
 project_name: redix
 builds:
-  - main: ./cmd/redix-server
-    id: redix
+  - id: redix
+    main: ./redix/cmd/redix-server
     binary: redix-server
     env:
       - CGO_ENABLED=0

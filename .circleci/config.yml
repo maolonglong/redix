@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  docker: circleci/docker@2.0.2
+  docker: circleci/docker@2.0.3
 
 jobs:
   test:
     docker:
-      - image: cimg/go:1.17
+      - image: cimg/go:1.18
     steps:
       - checkout
       - run:
@@ -19,10 +19,12 @@ jobs:
       - checkout
       - run:
           name: Run lint
-          command: golangci-lint run
+          command: |
+            cd redix
+            golangci-lint run
   release:
     docker:
-      - image: cimg/go:1.17
+      - image: cimg/go:1.18
     steps:
       - checkout
       - run: curl -sL https://git.io/goreleaser | bash

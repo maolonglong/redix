@@ -10,8 +10,8 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
+	"github.com/tidwall/evio"
 	"github.com/tidwall/redcon"
-	"go.chensl.me/evio"
 	"go.chensl.me/redix/internal/bytesconv"
 	"go.chensl.me/redix/pkg/storage"
 	"go.chensl.me/redix/pkg/storage/badger"

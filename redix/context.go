@@ -7,8 +7,8 @@ package redix
 import (
 	"fmt"
 
+	"github.com/tidwall/evio"
 	"github.com/tidwall/redcon"
-	"go.chensl.me/evio"
 )
 
 type Context struct {

@@ -8,9 +8,9 @@ require (
 	github.com/dustin/go-humanize v1.0.0
 	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.1
+	github.com/tidwall/evio v1.0.8
 	github.com/tidwall/match v1.1.1
 	github.com/tidwall/redcon v1.4.4
-	go.chensl.me/evio v1.0.9-0.20220308101908-a5395c05710f
 	go.uber.org/zap v1.21.0
 )
 
