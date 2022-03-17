@@ -9,7 +9,7 @@ build_image:
 	@./scripts/build_image.sh
 
 test:
-	go test -v -count=1 -race ./redix/...
+	go test -v -count=1 -race ./server/...
 
 clean:
 	rm -rf ./bin/

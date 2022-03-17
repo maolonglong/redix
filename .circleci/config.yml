@@ -23,7 +23,7 @@ jobs:
           command: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.44.2
       - run:
           name: Run lint
-          command: golangci-lint run ./redix/...
+          command: golangci-lint run ./server/...
   release:
     docker:
       - image: cimg/go:1.18

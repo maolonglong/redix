@@ -28,13 +28,13 @@
 
 ### 二进制
 
-[releases](https://github.com/MaoLongLong/redix/releases)
+提前编译好的二进制文件，下载直接运行：[releases](https://github.com/MaoLongLong/redix/releases)
 
-### Go Install
+### 源码编译
 
 ```bash
-$ go install go.chensl.me/redix/cmd/redix-server@latest
-go: downloading go.chensl.me/redix v0.1.0
+$ go install go.chensl.me/redix/server/cmd/redix-server@main
+...
 $ redix-server # 数据默认存放在当前目录的 data 文件夹下
  _____          _ _
 |  __ \        | (_)

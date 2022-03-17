@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/tidwall/match"
-	"go.chensl.me/redix/internal/bytesconv"
-	"go.chensl.me/redix/pkg/storage"
+	"go.chensl.me/redix/internal/storage"
+	"go.chensl.me/redix/pkg/bytesconv"
 	"go.uber.org/zap"
 )
 

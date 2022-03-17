@@ -10,4 +10,4 @@ COMMIT=$(git rev-parse --short HEAD)
 
 go build -o bin/redix-server \
     -ldflags="-w -s -X main.commit=${COMMIT}" \
-    ./redix/cmd/redix-server
+    ./server/cmd/redix-server

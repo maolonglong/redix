@@ -10,7 +10,7 @@ import (
 	"log"
 
 	"go.chensl.me/redix"
-	"go.chensl.me/redix/pkg/config"
+	"go.chensl.me/redix/internal/config"
 )
 
 //go:embed banner.txt

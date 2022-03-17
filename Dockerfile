@@ -12,7 +12,7 @@ COPY . .
 RUN go build -o /usr/bin/redix-server \
     -trimpath -buildvcs=false \
     -ldflags "-w -s -X main.commit=${COMMIT}" \
-    ./redix/cmd/redix-server
+    ./server/cmd/redix-server
 
 RUN apk add --no-cache upx && upx -9 /usr/bin/redix-server
 

@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.chensl.me/redix/pkg/storage"
+	"go.chensl.me/redix/internal/storage"
 )
 
 func Test_badgerStorage_CommonCmd(t *testing.T) {
