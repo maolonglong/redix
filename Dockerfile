@@ -10,7 +10,7 @@ WORKDIR /code
 COPY . .
 
 RUN go build -o /usr/bin/redix-server \
-    -buildvcs=false \
+    -trimpath -buildvcs=false \
     -ldflags "-w -s -X main.commit=${COMMIT}" \
     ./redix/cmd/redix-server
 
