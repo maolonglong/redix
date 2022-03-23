@@ -8,9 +8,12 @@ import (
 	_ "embed"
 	"fmt"
 	"log"
+	"os"
 
+	"github.com/cch123/gogctuner"
 	"go.chensl.me/redix"
 	"go.chensl.me/redix/internal/config"
+	_ "go.uber.org/automaxprocs"
 )
 
 //go:embed banner.txt
@@ -19,6 +22,10 @@ var banner string
 var commit string
 
 func main() {
+	if os.Getenv("ENABLE_GC_TUNER") == "1" {
+		go gogctuner.NewTuner(true /* useCgroup */, 70 /* percent */)
+	}
+
 	fmt.Printf("%s  commit=%s\n\n", banner, commit)
 	config.MustInit()
 	srv, err := redix.New()
