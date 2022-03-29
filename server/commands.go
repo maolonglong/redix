@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package redix
+package server
 
 import (
 	"strconv"
@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/tidwall/match"
-	"go.chensl.me/redix/internal/storage"
-	"go.chensl.me/redix/pkg/bytesconv"
+	"go.chensl.me/redix/server/internal/storage"
+	"go.chensl.me/redix/server/pkg/bytesconv"
 	"go.uber.org/zap"
 )
 

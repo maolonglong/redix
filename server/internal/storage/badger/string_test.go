@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"go.chensl.me/redix/internal/storage"
+	"go.chensl.me/redix/server/internal/storage"
 )
 
 func Test_badgerStorage_StringCmd(t *testing.T) {

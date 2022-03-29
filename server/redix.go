@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT-style
 // license that can be found in the LICENSE file.
 
-package redix
+package server
 
 import (
 	"fmt"
@@ -12,9 +12,9 @@ import (
 	"github.com/spf13/viper"
 	"github.com/tidwall/evio"
 	"github.com/tidwall/redcon"
-	"go.chensl.me/redix/internal/storage"
-	"go.chensl.me/redix/internal/storage/badger"
-	"go.chensl.me/redix/pkg/bytesconv"
+	"go.chensl.me/redix/server/internal/storage"
+	"go.chensl.me/redix/server/internal/storage/badger"
+	"go.chensl.me/redix/server/pkg/bytesconv"
 	"go.uber.org/zap"
 )
 

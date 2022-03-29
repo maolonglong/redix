@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/dgraph-io/badger/v3"
-	"go.chensl.me/redix/internal/storage"
-	"go.chensl.me/redix/pkg/bytesconv"
+	"go.chensl.me/redix/server/internal/storage"
+	"go.chensl.me/redix/server/pkg/bytesconv"
 )
 
 func (s *badgerStorage) Set(key, value []byte, opts storage.SetOptions) error {

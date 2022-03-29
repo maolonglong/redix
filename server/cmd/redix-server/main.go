@@ -11,8 +11,8 @@ import (
 	"os"
 
 	"github.com/cch123/gogctuner"
-	"go.chensl.me/redix"
-	"go.chensl.me/redix/internal/config"
+	"go.chensl.me/redix/server"
+	"go.chensl.me/redix/server/internal/config"
 	_ "go.uber.org/automaxprocs"
 )
 
@@ -28,7 +28,7 @@ func main() {
 
 	fmt.Printf("%s  commit=%s\n\n", banner, commit)
 	config.MustInit()
-	srv, err := redix.New()
+	srv, err := server.New()
 	if err != nil {
 		log.Fatal(err)
 	}

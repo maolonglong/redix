@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
-	"go.chensl.me/redix/internal/storage"
+	"go.chensl.me/redix/server/internal/storage"
 )
 
 type Config struct {

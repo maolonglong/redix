@@ -11,8 +11,8 @@ import (
 	"github.com/dgraph-io/ristretto/z"
 	"github.com/dustin/go-humanize"
 	"github.com/tidwall/match"
-	"go.chensl.me/redix/internal/storage"
-	"go.chensl.me/redix/pkg/bytesconv"
+	"go.chensl.me/redix/server/internal/storage"
+	"go.chensl.me/redix/server/pkg/bytesconv"
 	"go.uber.org/zap"
 )
 

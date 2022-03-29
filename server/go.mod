@@ -1,4 +1,4 @@
-module go.chensl.me/redix
+module go.chensl.me/redix/server
 
 go 1.17
 
