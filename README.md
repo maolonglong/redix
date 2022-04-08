@@ -7,6 +7,7 @@
 支持的命令：
 
 - SET
+- SETEX
 - SETNX
 - GET
 - INCR

@@ -24,6 +24,7 @@ func (s *Server) initCommands() {
 	s.register("flushdb", s.cmdFLUSHALL)
 
 	s.register("set", s.cmdSET)
+	s.register("setex", s.cmdSETEX)
 	s.register("setnx", s.cmdSETNX)
 	s.register("get", s.cmdGET)
 	s.register("incr", s.cmdAdd(1))
@@ -227,6 +228,28 @@ func (s *Server) cmdKEYS(c *Context) {
 	}
 
 	c.AppendBulkArray(keys)
+}
+
+func (s *Server) cmdSETEX(c *Context) {
+	if len(c.Args) != 3 {
+		c.ErrInvalidArgs()
+		return
+	}
+
+	ttl, err := strconv.Atoi(bytesconv.BytesToString(c.Args[1]))
+	if err != nil {
+		c.ErrInvalidInt()
+		return
+	}
+
+	err = s.store.Set(c.Args[0], c.Args[1], storage.SetOptions{TTL: time.Duration(ttl) * time.Second})
+	if err != nil {
+		s.logUnknownError("store.Set", err)
+		c.ErrUnknown(err)
+		return
+	}
+
+	c.AppendOK()
 }
 
 func (s *Server) cmdSETNX(c *Context) {
