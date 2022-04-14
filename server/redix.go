@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/spf13/viper"
 	"github.com/tidwall/evio"
@@ -78,6 +79,8 @@ func (s *Server) register(cmd string, fn CommandFunc) {
 
 func (s *Server) openedHandler(ec evio.Conn) (out []byte, opts evio.Options, action evio.Action) {
 	ec.SetContext(new(Context))
+	opts.ReuseInputBuffer = true
+	opts.TCPKeepAlive = 300 * time.Second
 	return //nolint:nakedret
 }
 
