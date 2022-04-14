@@ -80,7 +80,7 @@ func (s *badgerStorage) Add(key []byte, delta int) (int, error) {
 			if err != nil {
 				return storage.ErrInvalidInt
 			}
-			i++
+			i += delta
 			e := badger.NewEntry(key, bytesconv.StringToBytes(strconv.Itoa(i)))
 			if exp := item.ExpiresAt(); exp > 0 {
 				e = e.WithTTL(time.Until(time.Unix(int64(exp), 0)))

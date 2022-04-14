@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package entrypb;
+
+option go_package = "go.chensl.me/redix/server/internal/storage/boltdb/entrypb";
+
+message Entry {
+  bytes value      = 1;
+  int64 expires_at = 2;
+}

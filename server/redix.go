@@ -15,6 +15,7 @@ import (
 	"github.com/tidwall/redcon"
 	"go.chensl.me/redix/server/internal/storage"
 	"go.chensl.me/redix/server/internal/storage/badger"
+	"go.chensl.me/redix/server/internal/storage/boltdb"
 	"go.chensl.me/redix/server/pkg/bytesconv"
 	"go.uber.org/zap"
 )
@@ -38,7 +39,15 @@ func New() (*Server, error) {
 		return nil, err
 	}
 	srv.logger = logger
-	srv.store, err = badger.NewStorage(viper.GetString("data_dir"), logger)
+	dir := viper.GetString("data_dir")
+	driver := viper.GetString("driver")
+	if driver == "badger" {
+		srv.store, err = badger.NewStorage(dir, logger)
+	} else if driver == "boltdb" {
+		srv.store, err = boltdb.NewStorage(filepath.Join(dir, "redix.db"), logger)
+	} else {
+		logger.Fatal("unknown driver", zap.String("driver", driver))
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -63,6 +72,7 @@ func (s *Server) Run() error {
 		zap.String("host", viper.GetString("host")),
 		zap.Int("port", viper.GetInt("port")),
 		zap.String("data_dir", path),
+		zap.String("driver", viper.GetString("driver")),
 	)
 
 	addr := fmt.Sprintf("tcp://%s:%d", viper.GetString("host"), viper.GetInt("port"))

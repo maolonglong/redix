@@ -9,7 +9,6 @@ import (
 
 	"github.com/dgraph-io/badger/v3"
 	"github.com/dgraph-io/ristretto/z"
-	"github.com/dustin/go-humanize"
 	"github.com/tidwall/match"
 	"go.chensl.me/redix/server/internal/storage"
 	"go.chensl.me/redix/server/pkg/bytesconv"
@@ -150,11 +149,6 @@ func (s *badgerStorage) runValueLogGC() {
 			return
 		case <-ticker.C:
 		}
-		lsm, vlog := s.db.Size()
-		s.logger.Info("running value log GC",
-			zap.String("lsm", humanize.Bytes(uint64(lsm))),
-			zap.String("vlog", humanize.Bytes(uint64(vlog))),
-		)
 	again:
 		err := s.db.RunValueLogGC(0.7)
 		if err == nil {

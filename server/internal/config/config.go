@@ -23,6 +23,7 @@ func MustInit() {
 	viper.SetDefault("port", 6380)
 	viper.SetDefault("password", "")
 	viper.SetDefault("data_dir", "./data")
+	viper.SetDefault("driver", "badger")
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {

@@ -63,5 +63,5 @@ func (c *Context) ErrInvalidExp() {
 }
 
 func (c *Context) ErrUnknown(err error) {
-	c.AppendError(fmt.Sprintf("Err unknown %q", err.Error()))
+	c.AppendError(fmt.Sprintf("ERR unknown %q", err.Error()))
 }
