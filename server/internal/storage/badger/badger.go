@@ -23,7 +23,7 @@ type badgerStorage struct {
 }
 
 func NewStorage(path string, logger *zap.Logger) (storage.Interface, error) {
-	db, err := badger.Open(badger.DefaultOptions(path).WithLoggingLevel(badger.ERROR))
+	db, err := badger.Open(badger.DefaultOptions(path).WithDetectConflicts(false))
 	if err != nil {
 		return nil, err
 	}
