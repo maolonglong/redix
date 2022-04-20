@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package entrypb;
 
-option go_package = "go.chensl.me/redix/server/internal/storage/boltdb/entrypb";
+option go_package = "go.chensl.me/redix/server/internal/storage/entrypb";
 
 message Entry {
   bytes value      = 1;

@@ -6,5 +6,6 @@
 !Makefile
 
 .DS_Store
-.vscode
+.vscode/
+data/
 *.exe

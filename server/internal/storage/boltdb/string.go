@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"go.chensl.me/redix/server/internal/storage"
-	"go.chensl.me/redix/server/internal/storage/boltdb/entrypb"
+	"go.chensl.me/redix/server/internal/storage/entrypb"
 	"go.chensl.me/redix/server/pkg/bytesconv"
 	"go.etcd.io/bbolt"
 )

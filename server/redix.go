@@ -15,6 +15,7 @@ import (
 	"github.com/tidwall/redcon"
 	"go.chensl.me/redix/server/internal/storage"
 	"go.chensl.me/redix/server/internal/storage/badger"
+	"go.chensl.me/redix/server/internal/storage/bitcask"
 	"go.chensl.me/redix/server/internal/storage/boltdb"
 	"go.chensl.me/redix/server/pkg/bytesconv"
 	"go.uber.org/zap"
@@ -45,6 +46,8 @@ func New() (*Server, error) {
 		srv.store, err = badger.NewStorage(dir, logger)
 	} else if driver == "boltdb" {
 		srv.store, err = boltdb.NewStorage(filepath.Join(dir, "redix.db"), logger)
+	} else if driver == "bitcask" {
+		srv.store, err = bitcask.NewStorage(dir, logger)
 	} else {
 		logger.Fatal("unknown driver", zap.String("driver", driver))
 	}

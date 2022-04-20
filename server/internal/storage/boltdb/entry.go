@@ -7,7 +7,7 @@ package boltdb
 import (
 	"time"
 
-	"go.chensl.me/redix/server/internal/storage/boltdb/entrypb"
+	"go.chensl.me/redix/server/internal/storage/entrypb"
 	"go.etcd.io/bbolt"
 	"google.golang.org/protobuf/proto"
 )
