@@ -18,7 +18,7 @@ func (s *bitcaskStorage) Set(key, value []byte, opts storage.SetOptions) error {
 		return storage.ErrInvalidOpts
 	}
 
-	entry, err := s.getEntry(key)
+	_, err := s.getEntry(key)
 	if err != nil && err != storage.ErrNotExist {
 		return err
 	}
@@ -33,7 +33,7 @@ func (s *bitcaskStorage) Set(key, value []byte, opts storage.SetOptions) error {
 		}
 	}
 
-	entry = &entrypb.Entry{Value: value}
+	entry := &entrypb.Entry{Value: value}
 	if opts.TTL > 0 {
 		entry.ExpiresAt = time.Now().Add(opts.TTL).Unix()
 	}
