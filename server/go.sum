@@ -1034,6 +1034,8 @@ github.com/zenazn/goji v0.9.0/go.mod h1:7S9M489iMyHBNxwZnk9/EHS098H4/F6TATF2mIxt
 gitlab.com/nyarla/go-crypt v0.0.0-20160106005555-d9a5dc2b789b/go.mod h1:T3BPAOm2cqquPa0MKWeNkmOM5RQsRhkrwMWonFMN7fE=
 go.chensl.me/bitcask v0.0.0-20220415090807-ad588486474a h1:q0EjlGV1njguVAuJrQrENW/UuKzt0BFTejddfmwHJzU=
 go.chensl.me/bitcask v0.0.0-20220415090807-ad588486474a/go.mod h1:xdrgHky4cqxsuf9rJU9OkwcBfkZ/DUd09TnRyB8LAOg=
+go.chensl.me/bitcask v0.0.0-20220423080931-701d4c31cb66 h1:f7nx7nKCMswEecbHAJpfauQThDCZanJr98JLEkTrAqk=
+go.chensl.me/bitcask v0.0.0-20220423080931-701d4c31cb66/go.mod h1:xdrgHky4cqxsuf9rJU9OkwcBfkZ/DUd09TnRyB8LAOg=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.5/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

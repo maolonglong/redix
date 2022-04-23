@@ -69,8 +69,7 @@ func (s *bitcaskStorage) Del(keys ...[]byte) (int, error) {
 }
 
 func (s *bitcaskStorage) DropAll() error {
-	// TODO: 直接删文件，在 bitcask 库里实现
-	panic("unimplemented")
+	return s.db.DropAll()
 }
 
 func (s *bitcaskStorage) Expire(key []byte, dur time.Duration) error {

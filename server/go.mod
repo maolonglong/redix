@@ -14,7 +14,7 @@ require (
 	github.com/tidwall/evio v1.0.8
 	github.com/tidwall/match v1.1.1
 	github.com/tidwall/redcon v1.4.4
-	go.chensl.me/bitcask v0.0.0-20220415090807-ad588486474a
+	go.chensl.me/bitcask v0.0.0-20220423080931-701d4c31cb66
 	go.etcd.io/bbolt v1.3.6
 	go.uber.org/automaxprocs v1.4.0
 	go.uber.org/zap v1.21.0
