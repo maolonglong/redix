@@ -61,6 +61,13 @@ func (s *boltDBStorage) Keys(pattern string) ([][]byte, error) {
 			return nil
 		}
 		return b.ForEach(func(k, v []byte) error {
+			entry, err := s.getEntry(b, k)
+			if err != nil {
+				return err
+			}
+			if entry == nil {
+				return nil
+			}
 			if match.Match(bytesconv.BytesToString(k), pattern) {
 				keys = append(keys, cloneBytes(k))
 			}

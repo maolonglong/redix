@@ -37,15 +37,26 @@ func NewStorage(path string, logger *zap.Logger) (storage.Interface, error) {
 
 func (s *bitcaskStorage) Keys(pattern string) ([][]byte, error) {
 	var keys [][]byte
-
 	err := s.db.ForEach(func(key, _ []byte) error {
-		if match.Match(bytesconv.BytesToString(key), pattern) {
-			keys = append(keys, key)
-		}
+		keys = append(keys, key)
 		return nil
 	})
 
-	return keys, err
+	var filtered [][]byte
+	for _, k := range keys {
+		_, err := s.getEntry(k)
+		if err == storage.ErrNotExist {
+			continue
+		}
+		if err != nil {
+			return nil, err
+		}
+		if match.Match(bytesconv.BytesToString(k), pattern) {
+			filtered = append(filtered, k)
+		}
+	}
+
+	return filtered, err
 }
 
 func (s *bitcaskStorage) Del(keys ...[]byte) (int, error) {
