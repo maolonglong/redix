@@ -10,6 +10,8 @@
 - SETEX
 - SETNX
 - GET
+- MSET
+- MGET
 - INCR
 - INCRBY
 - DECR
