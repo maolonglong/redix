@@ -31,6 +31,8 @@ func (s *Server) initCommands() {
 	s.register("decr", s.cmdAdd(-1))
 	s.register("incrby", s.cmdAddBy(true))
 	s.register("decrby", s.cmdAddBy(false))
+	s.register("mget", s.cmdMGET)
+	s.register("mset", s.cmdMSET)
 }
 
 func (s *Server) cmdSET(c *Context) {
@@ -325,6 +327,47 @@ func (s *Server) cmdAddBy(incr bool) CommandFunc {
 
 		c.AppendInt(int64(i))
 	}
+}
+
+func (s *Server) cmdMGET(c *Context) {
+	if len(c.Args) == 0 {
+		c.ErrInvalidArgs()
+		return
+	}
+
+	var vals [][]byte
+	for _, k := range c.Args {
+		v, err := s.store.Get(k)
+		if err == storage.ErrNotExist {
+			vals = append(vals, nil)
+		} else if err != nil {
+			s.logUnknownError("store.Get", err)
+			c.ErrUnknown(err)
+			return
+		} else {
+			vals = append(vals, v)
+		}
+	}
+
+	c.AppendBulkArray(vals)
+}
+
+func (s *Server) cmdMSET(c *Context) {
+	n := len(c.Args)
+	if n == 0 || n%2 != 0 {
+		c.ErrInvalidArgs()
+		return
+	}
+
+	for i := 0; i+1 < n; i += 2 {
+		if err := s.store.Set(c.Args[i], c.Args[i+1], storage.SetOptions{}); err != nil {
+			s.logUnknownError("store.Set", err)
+			c.ErrUnknown(err)
+			return
+		}
+	}
+
+	c.AppendOK()
 }
 
 func (s *Server) logUnknownError(method string, err error) {

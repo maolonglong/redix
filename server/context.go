@@ -26,6 +26,10 @@ func (c *Context) AppendError(s string) {
 func (c *Context) AppendBulkArray(bs [][]byte) {
 	*c.out = redcon.AppendArray(*c.out, len(bs))
 	for _, b := range bs {
+		if b == nil {
+			*c.out = redcon.AppendNull(*c.out)
+			continue
+		}
 		*c.out = redcon.AppendBulk(*c.out, b)
 	}
 }
