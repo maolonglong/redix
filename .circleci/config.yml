@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  docker: circleci/docker@2.0.3
+  docker: circleci/docker@2.1.1
 
 jobs:
   test:
@@ -14,7 +14,7 @@ jobs:
           command: make test
   lint:
     docker:
-      - image: golangci/golangci-lint:v1.45.2-alpine
+      - image: golangci/golangci-lint:v1.46.1-alpine
     steps:
       - checkout
       - run: golangci-lint run ./server/...
