@@ -3,18 +3,18 @@ module go.chensl.me/redix/server
 go 1.17
 
 require (
-	github.com/cch123/gogctuner v0.0.0-20220505123905-c4212d5fa183
 	github.com/dgraph-io/badger/v3 v3.2103.2
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/spf13/viper v1.11.0
-	github.com/stretchr/testify v1.7.1
+	github.com/stretchr/testify v1.7.2
 	github.com/tidwall/evio v1.0.8
 	github.com/tidwall/match v1.1.1
 	github.com/tidwall/redcon v1.4.5
 	go.chensl.me/bitcask v0.0.0-20220423091943-2a89c047efcc
+	go.chensl.me/gogctuner v0.0.0-20220607160405-2f3fe0601fb3
 	go.etcd.io/bbolt v1.3.6
 	go.uber.org/automaxprocs v1.5.1
 	go.uber.org/goleak v1.1.12
@@ -40,13 +40,15 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/kavu/go_reuseport v1.5.0 // indirect
 	github.com/klauspost/compress v1.15.4 // indirect
+	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/shirou/gopsutil v3.21.11+incompatible // indirect
+	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
+	github.com/shirou/gopsutil/v3 v3.22.5 // indirect
 	github.com/spf13/afero v1.8.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
@@ -64,5 +66,5 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20220512140231-539c8e751b99 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
